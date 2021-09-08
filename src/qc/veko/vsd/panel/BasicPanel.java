@@ -1,4 +1,4 @@
-package qc.veko.vsd;
+package qc.veko.vsd.panel;
 
 import java.awt.Color;
 import java.io.File;
@@ -18,9 +18,11 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 
+import qc.veko.easyswing.engine.EasyFrame;
 import qc.veko.easyswing.engine.EasyPanel;
 import qc.veko.easyswing.guihelper.EasyButton;
 import qc.veko.easyswing.utils.Utils;
+import qc.veko.vsd.VSD;
 
 public class BasicPanel extends EasyPanel implements NativeKeyListener {
 	
@@ -118,6 +120,10 @@ public class BasicPanel extends EasyPanel implements NativeKeyListener {
 					isKeyBindingMode = false;
 				button.setColored(deleteButtonsColors(deleteInformations), deleteButtonsColors(deleteInformations));
 				setText();
+
+				//test line remove after
+				EasyFrame.getInstance().setPanel(new OptionPanel());
+
 				break;
 			case "KeyBind":
 				isKeyBindingMode = (isKeyBindingMode) ? false : true;

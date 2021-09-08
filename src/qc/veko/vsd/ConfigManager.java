@@ -20,9 +20,9 @@ public class ConfigManager {
 	private int DEFAULT_NUMBER_BUTTONS = 9;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	Map<Integer, Map<String, String>> buttonInformations = new HashMap();
+	public Map<Integer, Map<String, String>> buttonInformations = new HashMap();
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	Map<String, String> configInformations = new HashMap();
+	public Map<String, String> configInformations = new HashMap();
 
 	public void loadConfig() throws Exception {
 		

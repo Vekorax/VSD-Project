@@ -25,13 +25,14 @@ public class BasicButton extends JComponent implements MouseListener{
 	private int y;
 	private int width;
 	private int height;
-	
-	public boolean colored = false;
+
 	private Color hoverColor;
 	private Color normalColor;
 	
 	private Image hoverImage;
 	private Image normalImage;
+
+	private ButtonType buttonType;
 	
 	
     public BasicButton(EasyPanel panel, int minX, int minY, int maxX, int maxY, String name, int id) {
@@ -42,6 +43,8 @@ public class BasicButton extends JComponent implements MouseListener{
         width = maxX;
         height = maxY;
         text = name;
+		setButtonType(ButtonType.BASIC);
+		panel.add(this);
     }
     
 	@Override
@@ -53,17 +56,21 @@ public class BasicButton extends JComponent implements MouseListener{
     public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		setBounds(x, y, width, height);
-		if (colored) {
-			if (hover)
-				g.setColor(hoverColor);
-			else 
-				g.setColor(normalColor);
-			g.fillRect(0,0,this.getWidth(), this.getHeight());
-		} else {
-			if (hover)
-				Utils.drawFullsizedImage(g, this, hoverImage);
-			else
-				Utils.drawFullsizedImage(g, this, normalImage);
+		switch(buttonType) {
+			case TEXTURED:
+				if (hover)
+					Utils.drawFullsizedImage(g, this, hoverImage);
+				else
+					Utils.drawFullsizedImage(g, this, normalImage);
+				break;
+			case COLORED:
+				if (hover)
+					g.setColor(hoverColor);
+				else
+					g.setColor(normalColor);
+				g.fillRect(0,0,this.getWidth(), this.getHeight());
+				break;
+			default:
 		}
 		Utils.drawCenteredString(g, text, this.getBounds(), this.getFont());
     }
@@ -79,7 +86,7 @@ public class BasicButton extends JComponent implements MouseListener{
 	public BasicButton setColored(Color normal, Color hover) {
 		normalColor = normal;
 		hoverColor = hover;
-		colored = true;
+		setButtonType(ButtonType.COLORED);
 		return this;
 	}
 	
@@ -87,9 +94,7 @@ public class BasicButton extends JComponent implements MouseListener{
 		normalImage = normal;
 		hoverImage = hover;
 		this.hover = false;
-		//button.setIcon(Utils.convertImageToIcon(normal));
-		//button.setRolloverIcon(Utils.convertImageToIcon(hover));
-		//button.setPressedIcon(Utils.convertImageToIcon(hover));
+		setButtonType(ButtonType.TEXTURED);
 		return this;
 	}
 	
@@ -121,6 +126,16 @@ public class BasicButton extends JComponent implements MouseListener{
 		
 		repaint();
 		
+	}
+
+	private void setButtonType(ButtonType buttonType) {
+		this.buttonType = buttonType;
+	}
+
+	public enum ButtonType {
+		COLORED(),
+		TEXTURED(),
+		BASIC(),
 	}
 	
 }

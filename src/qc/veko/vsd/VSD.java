@@ -1,6 +1,15 @@
+/*
+Ce logiciel vous permet de créé des keybinds pour ouvrir des application, des sites web, de mute votre
+micro, etc. Les possibilité sont grande et c'est principallement une alternative au fameux StreamDeck.
+
+Author: Vekorax
+Date: 23/08/2021
+ */
+
 package qc.veko.vsd;
 
 import qc.veko.easyswing.EasySwing;
+import qc.veko.vsd.panel.BasicPanel;
 
 public class VSD extends EasySwing {
 

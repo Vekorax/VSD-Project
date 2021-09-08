@@ -107,7 +107,7 @@ public class EasyRectangle extends JComponent{
         g.setColor(Color.BLACK);
         g.setFont(this.getFont());
 		for (int i = 0; i < text.length; ++i) {
-			g.drawString(text[i], (int) getStringCenterPos(rect, text[i], fm, g).getX(), (int) (getStringCenterPos(rect, text[i], fm, g).getY()  + i*font.getSize()));
+			g.drawString(text[i], (int) getStringCenterPos(rect, text[i], fm, g).getX(), (int) (getStringCenterPos(rect, text[i], fm, g).getY() +(14 / text.length) + i*font.getSize()));
 		}
 	}
 	
