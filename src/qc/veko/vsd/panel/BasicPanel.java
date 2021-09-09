@@ -24,9 +24,11 @@ import qc.veko.easyswing.guihelper.EasyButton;
 import qc.veko.easyswing.utils.Utils;
 import qc.veko.vsd.VSD;
 
-public class BasicPanel extends EasyPanel implements NativeKeyListener {
+public class BasicPanel extends EasyPanel {
 	
 	private int maxButton = 0;
+
+	private static BasicPanel instance;
 	
 	private final int WIDTH_OF_BUTTON = 150;
 	private final int HEIGHT_OF_BUTTON = 40;
@@ -36,13 +38,13 @@ public class BasicPanel extends EasyPanel implements NativeKeyListener {
 	
 	private boolean deleteInformations = false;
 	
-	private boolean isKeyBindingMode = false;
-	private int inKeyBindButtonId = 0;
-	private boolean buttonSelectorForKeyBind = false;
-	private EasyButton keybindButton;
-	private EasyButton deleteButton;
+	public boolean isKeyBindingMode = false;
+	public int inKeyBindButtonId = 0;
+	public boolean buttonSelectorForKeyBind = false;
+	public EasyButton keybindButton;
+	public EasyButton deleteButton;
 	
-	private boolean showKeybind = false;
+	public boolean showKeybind = false;
 	
 	private JLabel informationsText = new JLabel("", 0);;
 	
@@ -58,16 +60,11 @@ public class BasicPanel extends EasyPanel implements NativeKeyListener {
 	
 
 	public BasicPanel() {
+		instance = this;
 		setBackGround(VSD.getInstance().configManager.configInformations.get("Background")).setBackGroundScale(600, 600);
 		setLayout(null);
 		load();
 
-		try {
-			GlobalScreen.registerNativeHook();
-		} catch (NativeHookException e) {
-			e.printStackTrace();
-		}
-		GlobalScreen.addNativeKeyListener(this);
 	}
 	
 	public void load() {
@@ -99,14 +96,14 @@ public class BasicPanel extends EasyPanel implements NativeKeyListener {
 	}
 	
 	
-	private Color deleteButtonsColors(boolean buttonState) {
+	public Color deleteButtonsColors(boolean buttonState) {
 		if (buttonState)
 			return Color.GREEN;
 		else
 			return Color.RED;
 	}
 	
-	private EasyButton getButtonFromId(int id) {
+	public EasyButton getButtonFromId(int id) {
 		return buttonsMap.get(id);
 	}
 	
@@ -120,9 +117,6 @@ public class BasicPanel extends EasyPanel implements NativeKeyListener {
 					isKeyBindingMode = false;
 				button.setColored(deleteButtonsColors(deleteInformations), deleteButtonsColors(deleteInformations));
 				setText();
-
-				//test line remove after
-				EasyFrame.getInstance().setPanel(new OptionPanel());
 
 				break;
 			case "KeyBind":
@@ -178,7 +172,8 @@ public class BasicPanel extends EasyPanel implements NativeKeyListener {
 	
 	private void launchOrCreate(EasyButton button) {
 		if (button.getPath() == null) {
-			chooseDataAndName(button);
+			//chooseDataAndName(button);
+			EasyFrame.getInstance().setPanel(new ButtonSetPanel(button));
 		} else {
 			String type = VSD.getInstance().configManager.buttonInformations.get(button.getId()).get("Type");
 			if (type.equals("internet")) {
@@ -204,128 +199,28 @@ public class BasicPanel extends EasyPanel implements NativeKeyListener {
 		}
 	}
 	
-	private void launchOrCreate(int id) {
+	public void launch(int id) {
 		EasyButton button = buttonsMap.get(id);
-		if (button.getPath() == null) {
-			chooseDataAndName(button);
-		} else {
-			String type = VSD.getInstance().configManager.buttonInformations.get(button.getId()).get("Type");
+		String type = VSD.getInstance().configManager.buttonInformations.get(button.getId()).get("Type");
 			
-			if (type.equals("internet")) {
-				try {
-	        		URI link = new URI(button.getPath());
-	
-	        		if (Desktop.isDesktopSupported())
-	        		{
-	        			Desktop.getDesktop().browse(link);
-	        		}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else {
-				
-				File selectedFile = new File(button.getPath());
-				try {
-					Desktop.getDesktop().open(selectedFile);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	public void chooseDataAndName(EasyButton button) {
-		String text = JOptionPane.showInputDialog(null, "Enter Name of Button", "Name of Button", JOptionPane.INFORMATION_MESSAGE);
-		if (text == null)
-			return;
-		
-		Object[] options = { "Internet", "File"};
-    	int selection = JOptionPane.showOptionDialog(null, "The type of your button?", "Please select", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-    	switch(selection) {
-    	case 1:
-    		openFileSelector(button, text);
-    		break;
-    	case 0:
-    		openLinkSelector(button, text);
-    		break;
-    	}
-	}
-	
-	private void openFileSelector(EasyButton button, String text) {
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setDialogTitle("Choose a file to open");
-		int returnValue = fileChooser.showOpenDialog(null);
-		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = fileChooser.getSelectedFile();
-			String keep;
-
-			keep = selectedFile.getAbsolutePath();
-			button.SetPath(keep);
+		if (type.equals("internet")) {
 			try {
-				VSD.getInstance().configManager.createButtonInformation(text, keep, "file", button.getId());
+	        	URI link = new URI(button.getPath());
+	        	if (Desktop.isDesktopSupported())
+	        	{
+	        		Desktop.getDesktop().browse(link);
+	        	}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			File selectedFile = new File(button.getPath());
+			try {
+				Desktop.getDesktop().open(selectedFile);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			button.setText(text);
 		}
-	}
-	
-	private void openLinkSelector(EasyButton button, String text) {
-		String link = JOptionPane.showInputDialog(null, "Enter Name of Button", "Name of Button", JOptionPane.INFORMATION_MESSAGE);
-		if (link == null)
-			return;
-		button.SetPath(link);
-		try {
-			VSD.getInstance().configManager.createButtonInformation(text, link, "internet", button.getId());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		button.setText(text);
-	}
-
-
-	@Override
-	public void nativeKeyPressed(NativeKeyEvent arg0) {
-	}
-
-
-	@Override
-	public void nativeKeyReleased(NativeKeyEvent arg0) {
-		if (buttonSelectorForKeyBind && isKeyBindingMode) {
-			Map <String, String> m = VSD.getInstance().configManager.buttonInformations.get(inKeyBindButtonId);
-			m.put("KeyBind", String.valueOf(arg0.getKeyCode()));
-			m.put("KeyBindText", NativeKeyEvent.getKeyText(arg0.getKeyCode()));
-			VSD.getInstance().configManager.buttonInformations.put(inKeyBindButtonId, m);
-			
-			try {
-				VSD.getInstance().configManager.addKeybindToButtonsFile(inKeyBindButtonId, arg0.getKeyCode(), NativeKeyEvent.getKeyText(arg0.getKeyCode()));
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}	
-			
-			if (showKeybind)
-				getButtonFromId(inKeyBindButtonId).setText("(" + NativeKeyEvent.getKeyText(arg0.getKeyCode()) + ")");
-			
-			buttonSelectorForKeyBind = false;
-			isKeyBindingMode = false;
-			keybindButton.setColored(deleteButtonsColors(isKeyBindingMode), deleteButtonsColors(isKeyBindingMode));
-			setText();
-		} else {
-			VSD.getInstance().configManager.buttonInformations.forEach((id, map) -> {
-				if (map.containsKey("KeyBind")) {
-					int buttonKeyBind = Utils.convertStringToInteger(map.get("KeyBind"));
-					if (arg0.getKeyCode() == buttonKeyBind) 
-						launchOrCreate(id);
-				}
-			});
-		}
-	}
-
-
-	@Override
-	public void nativeKeyTyped(NativeKeyEvent arg0) {
-		
-		
 	}
 	
 	public void setText() {
@@ -337,6 +232,10 @@ public class BasicPanel extends EasyPanel implements NativeKeyListener {
 		else 
 			text = "";
 		this.informationsText.setText(text);
+	}
+
+	public static BasicPanel getInstance() {
+		return instance;
 	}
 	
 }

@@ -9,15 +9,22 @@ Date: 23/08/2021
 package qc.veko.vsd;
 
 import qc.veko.easyswing.EasySwing;
+import qc.veko.vsd.manager.ConfigManager;
+import qc.veko.vsd.manager.KeyboardManager;
 import qc.veko.vsd.panel.BasicPanel;
 
 public class VSD extends EasySwing {
+
+	public final int WIDTH_OF_BUTTON = 150;
+	public final int HEIGHT_OF_BUTTON = 40;
+	public final int NUMBER_OF_PIXEL_TO_SEPERATE_BUTTONS_HEIGHT = 70;
+	public final int BUTTONS_SEPARATION = 35;
+	public final int NUMBER_OF_BUTTTONS_PER_ROW = 3;
 
 	public ConfigManager configManager = new ConfigManager();
 	public static VSD instance;
 	
 	public static void main(String[] args) {
-		
 		new VSD();
 		getFrame().setDefaultPanel(new BasicPanel()).setFrameResolution(600, 600).setFrameTitle("VSD Project V0.0.1");
 		launch();
@@ -31,6 +38,7 @@ public class VSD extends EasySwing {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		new KeyboardManager();
 	}
 	
 	public static VSD getInstance() {
