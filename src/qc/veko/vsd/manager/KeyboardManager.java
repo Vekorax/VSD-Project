@@ -9,6 +9,7 @@ import qc.veko.easyswing.utils.Utils;
 import qc.veko.vsd.VSD;
 import qc.veko.vsd.panel.BasicPanel;
 import qc.veko.vsd.panel.ButtonSetPanel;
+import qc.veko.vsd.utils.VSDUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -48,16 +49,15 @@ public class KeyboardManager implements NativeKeyListener {
             }
 
             if (BasicPanel.getInstance().showKeybind)
-                BasicPanel.getInstance().getButtonFromId(BasicPanel.getInstance().inKeyBindButtonId).setText("(" + NativeKeyEvent.getKeyText(arg0.getKeyCode()) + ")");
+                BasicPanel.getInstance().getButtonFromId(ButtonSetPanel.getInstance().button.getId()).setText("(" + NativeKeyEvent.getKeyText(arg0.getKeyCode()) + ")");
 
             ButtonSetPanel.getInstance().isKeyBindingMode = false;
-            ButtonSetPanel.getInstance().keybindButton.setColored(BasicPanel.getInstance().deleteButtonsColors(BasicPanel.getInstance().isKeyBindingMode), BasicPanel.getInstance().deleteButtonsColors(BasicPanel.getInstance().isKeyBindingMode));
         } else {
             VSD.getInstance().configManager.buttonInformations.forEach((id, map) -> {
                 if (map.containsKey("KeyBind")) {
                     int buttonKeyBind = Utils.convertStringToInteger(map.get("KeyBind"));
                     if (arg0.getKeyCode() == buttonKeyBind)
-                        BasicPanel.getInstance().launch(id);
+                        VSDUtils.launch(id);
                 }
             });
         }

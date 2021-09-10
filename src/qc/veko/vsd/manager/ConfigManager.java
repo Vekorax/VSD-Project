@@ -10,17 +10,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import qc.veko.easyswing.utils.Utils;
-import qc.veko.vsd.VSD;
-import qc.veko.vsd.panel.ButtonSetPanel;
 
 public class ConfigManager {
 	
-	private String DATA_FOLDER = System.getenv("APPDATA") + "\\" + "VSD";
-	private String CONFIG_FILE_PATH = DATA_FOLDER + "\\config.yml";
-	private String BUTTONS_FILE_PATH = DATA_FOLDER + "\\buttons";
-	private String DEFAULT_WALLPAPER = "/qc/veko/vsd/background.png";
-	private int DEFAULT_NUMBER_BUTTONS = 9;
-	
+	private final String DATA_FOLDER = System.getenv("APPDATA") + "\\" + "VSD";
+	private final String CONFIG_FILE_PATH = DATA_FOLDER + "\\config.yml";
+	private final String BUTTONS_FILE_PATH = DATA_FOLDER + "\\buttons";
+	private final String DEFAULT_WALLPAPER = "/qc/veko/vsd/background.png";
+	private final int DEFAULT_NUMBER_BUTTONS = 9;
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Map<Integer, Map<String, String>> buttonInformations = new HashMap();
 	@SuppressWarnings({ "unchecked", "rawtypes" })

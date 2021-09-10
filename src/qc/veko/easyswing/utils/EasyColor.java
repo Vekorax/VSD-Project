@@ -5,8 +5,9 @@ import java.util.HashMap;
 
 public enum EasyColor {
 
-	Dark_Grey(new Color(75, 75, 75)),
-	Orange(new Color(249, 91, 0)),
+	DARK_GREY(new Color(75, 75, 75)),
+	ORANGE(new Color(249, 91, 0)),
+	DARK_GRAY(new Color(23, 23, 23)),
 	;
 	
 	private Color color;

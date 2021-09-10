@@ -3,7 +3,9 @@ package qc.veko.vsd.panel;
 import qc.veko.easyswing.engine.EasyFrame;
 import qc.veko.easyswing.engine.EasyPanel;
 import qc.veko.easyswing.guihelper.EasyButton;
+import qc.veko.easyswing.utils.EasyColor;
 import qc.veko.vsd.VSD;
+import qc.veko.vsd.utils.VSDUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +22,8 @@ public class ButtonSetPanel extends EasyPanel {
     public boolean isKeyBindingMode = false;
 
     public ButtonSetPanel(EasyButton button){
+        setBakcgroundColor(EasyColor.getColor(EasyColor.DARK_GREY));
+        setTitleBar("VSD Project V0.0.1 ALPHA", Color.orange);
         instance = this;
         setLayout(null);
         this.button = button;
@@ -27,11 +31,11 @@ public class ButtonSetPanel extends EasyPanel {
     }
 
     private void loadButton() {
-        new EasyButton(this,  xOfButton(1), 140, VSD.getInstance().WIDTH_OF_BUTTON, VSD.getInstance().HEIGHT_OF_BUTTON, "Edit Name", 1, null).setColored(Color.darkGray, Color.gray).addButton();;
+        new EasyButton(this,  xOfButton(1), 140, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Edit Name", 1, null).setColored(Color.darkGray, Color.gray).setTextColor(Color.white).addButton();;
 
-        pathButton = new EasyButton(this, VSD.getInstance().BUTTONS_SEPARATION, 500, VSD.getInstance().WIDTH_OF_BUTTON, VSD.getInstance().HEIGHT_OF_BUTTON, "Set Path", 2, null).setColored(Color.darkGray, Color.gray).addButton();
-        keybindButton = new EasyButton(this, xOfButton(1), 500, VSD.getInstance().WIDTH_OF_BUTTON, VSD.getInstance().HEIGHT_OF_BUTTON, "KeyBind", 3, null).setColored(deleteButtonsColors(isKeyBindingMode), deleteButtonsColors(isKeyBindingMode)).addButton();
-        new EasyButton(this, xOfButton(2), 500, VSD.getInstance().WIDTH_OF_BUTTON, VSD.getInstance().HEIGHT_OF_BUTTON, "Finish", 4, null).setColored(Color.darkGray, Color.gray).addButton();
+        pathButton = new EasyButton(this, VSDUtils.BUTTONS_SEPARATION, 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Set Path", 2, null).setTextColor(Color.white).setColored(Color.darkGray, Color.gray).addButton();
+        keybindButton = new EasyButton(this, xOfButton(1), 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "KeyBind", 3, null).setColored(deleteButtonsColors(isKeyBindingMode), deleteButtonsColors(isKeyBindingMode)).addButton();
+        new EasyButton(this, xOfButton(2), 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Finish", 4, null).setTextColor(Color.white).setColored(Color.darkGray, Color.gray).addButton();
     }
 
     @Override
@@ -61,9 +65,9 @@ public class ButtonSetPanel extends EasyPanel {
 
     private int xOfButton (int xCounter) {
         if (xCounter == 0)
-            return VSD.getInstance().BUTTONS_SEPARATION;
+            return VSDUtils.BUTTONS_SEPARATION;
         else
-            return VSD.getInstance().WIDTH_OF_BUTTON * xCounter + VSD.getInstance().BUTTONS_SEPARATION * xCounter + VSD.getInstance().BUTTONS_SEPARATION;
+            return VSDUtils.WIDTH_OF_BUTTON * xCounter + VSDUtils.BUTTONS_SEPARATION * xCounter + VSDUtils.BUTTONS_SEPARATION;
     }
 
     public void chooseName(EasyButton button) {

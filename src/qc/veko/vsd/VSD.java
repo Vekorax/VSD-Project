@@ -15,12 +15,6 @@ import qc.veko.vsd.panel.BasicPanel;
 
 public class VSD extends EasySwing {
 
-	public final int WIDTH_OF_BUTTON = 150;
-	public final int HEIGHT_OF_BUTTON = 40;
-	public final int NUMBER_OF_PIXEL_TO_SEPERATE_BUTTONS_HEIGHT = 70;
-	public final int BUTTONS_SEPARATION = 35;
-	public final int NUMBER_OF_BUTTTONS_PER_ROW = 3;
-
 	public ConfigManager configManager = new ConfigManager();
 	public static VSD instance;
 	
