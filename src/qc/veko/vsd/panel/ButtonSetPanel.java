@@ -54,7 +54,7 @@ public class ButtonSetPanel extends EasyPanel {
                 button.setColored(deleteButtonsColors(isKeyBindingMode), deleteButtonsColors(isKeyBindingMode));
                 break;
             case 4:
-                if (button.getText() != null && button.getPath() != null)
+                if (this.button.getText() != null && this.button.getPath() != null)
                     EasyFrame.getInstance().setPanel(new BasicPanel());
                 else
                     JOptionPane.showMessageDialog(null, "The name and the path must be set before finishing", "Empty informations", JOptionPane.INFORMATION_MESSAGE);
@@ -84,6 +84,11 @@ public class ButtonSetPanel extends EasyPanel {
             return;
         button.setText(text);
         this.button.setText(text);
+        try {
+            VSD.getInstance().configManager.createButtonInformation(text, null, null, this.button.getId());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void chooseData(String name) {

@@ -103,6 +103,8 @@ public class BasicPanel extends EasyPanel {
 
 	@Override
 	public void onButtonRightClick(EasyButton button) {
+		if (button.getText().equals("Show KeyBind"))
+			EasyFrame.getInstance().setPanel(new OptionPanel());
 		if (maxButton >= button.getId()) {
 			if (button.getPath() != null)
 				deleteOrEditButton(button);
