@@ -31,11 +31,13 @@ public class ButtonSetPanel extends EasyPanel {
     }
 
     private void loadButton() {
-        new EasyButton(this,  xOfButton(1), 140, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Edit Name", 1, null).setColored(Color.darkGray, Color.gray).setTextColor(Color.white).addButton();;
+        String buttonName = (button.getPath() != null) ? button.getText() : "Edit Name";
+        new EasyButton(this,  xOfButton(1), 140, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, buttonName, 1, null).setColored(Color.darkGray, Color.gray).setTextColor(Color.white).addButton();;
 
         pathButton = new EasyButton(this, VSDUtils.BUTTONS_SEPARATION, 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Set Path", 2, null).setTextColor(Color.white).setColored(Color.darkGray, Color.gray).addButton();
         keybindButton = new EasyButton(this, xOfButton(1), 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "KeyBind", 3, null).setColored(deleteButtonsColors(isKeyBindingMode), deleteButtonsColors(isKeyBindingMode)).addButton();
         new EasyButton(this, xOfButton(2), 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Finish", 4, null).setTextColor(Color.white).setColored(Color.darkGray, Color.gray).addButton();
+        new EasyButton(this, xOfButton(2), 430, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Back", 5, null).setTextColor(Color.white).setColored(Color.darkGray, Color.gray).addButton();
     }
 
     @Override
@@ -48,8 +50,14 @@ public class ButtonSetPanel extends EasyPanel {
                 chooseData(this.button.getText());
                 break;
             case 3:
-                isKeyBindingMode = (isKeyBindingMode) ? false : true;
+                isKeyBindingMode = !isKeyBindingMode;
                 button.setColored(deleteButtonsColors(isKeyBindingMode), deleteButtonsColors(isKeyBindingMode));
+                break;
+            case 4:
+                if (button.getText() != null && button.getPath() != null)
+                    EasyFrame.getInstance().setPanel(new BasicPanel());
+                else
+                    JOptionPane.showMessageDialog(null, "The name and the path must be set before finishing", "Empty informations", JOptionPane.INFORMATION_MESSAGE);
                 break;
             default:
                 EasyFrame.getInstance().setPanel(new BasicPanel());

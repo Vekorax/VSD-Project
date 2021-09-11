@@ -28,11 +28,23 @@ public class EasyButton {
 		button = new JButton(name);
 		button.setBounds(minX, minY, maxX, maxY);
 		button.addActionListener(onClick(this));
+		button.addMouseListener(onRightClick(this));
 		button.setBorderPainted(false);
 		button.setFont(font);
 		button.setFocusPainted(false);
 		this.id = id;
 		this.path = path;
+	}
+
+	private MouseAdapter onRightClick(EasyButton button) {
+		MouseAdapter mouseAdapter = new MouseAdapter() {
+			public void mouseReleased(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					panel.onButtonRightClick(button);
+				}
+			}
+		};
+		return mouseAdapter;
 	}
 	
 	public EasyButton setColored(Color normal, Color hover) {

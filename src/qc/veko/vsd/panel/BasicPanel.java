@@ -23,8 +23,6 @@ public class BasicPanel extends EasyPanel {
 	
 	private int maxButton = 0;
 	private static BasicPanel instance;
-	private boolean deleteInformations;
-	public EasyButton deleteButton;
 	public boolean showKeybind;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -62,7 +60,7 @@ public class BasicPanel extends EasyPanel {
 				yCounter++;
 			}
 		}
-		deleteButton = new EasyButton(this, VSDUtils.BUTTONS_SEPARATION, 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Delete info", maxButton + 1, null).setColored(deleteButtonsColors(deleteInformations), deleteButtonsColors(deleteInformations)).addButton();
+		//deleteButton = new EasyButton(this, VSDUtils.BUTTONS_SEPARATION, 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Delete info", maxButton + 1, null).setColored(deleteButtonsColors(deleteInformations), deleteButtonsColors(deleteInformations)).addButton();
 		new EasyButton(this, xOfButton(1), 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Show KeyBind", maxButton + 2, null).setFontSize(15F).setColored(deleteButtonsColors(showKeybind), deleteButtonsColors(showKeybind)).addButton();
 	}
 
@@ -81,10 +79,6 @@ public class BasicPanel extends EasyPanel {
 	public void onButtonClick(EasyButton button) {
 		if (maxButton < button.getId()) {
 			switch (button.getText()) {
-			case "Delete info":
-				deleteInformations = !deleteInformations;
-				button.setColored(deleteButtonsColors(deleteInformations), deleteButtonsColors(deleteInformations));
-				break;
 			case "Show KeyBind":
 				showKeybind = !showKeybind;
 				buttonsMap.forEach((id, ezButton) -> {
@@ -103,23 +97,37 @@ public class BasicPanel extends EasyPanel {
 				break;
 			}
 		} else {
-			if (deleteInformations) {
-				if (button.getPath() != null) {
-					try {
-						VSD.getInstance().configManager.deleteButtonInformations(button.getId());
-						button.setText("button" + button.getId());
-						button.SetPath(null);
-						JOptionPane.showMessageDialog(null, "Your button is now fresh", "Buttons info deleted", JOptionPane.INFORMATION_MESSAGE);
-						deleteInformations = false;
-						deleteButton.setColored(deleteButtonsColors(false), deleteButtonsColors(deleteInformations));
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-						JOptionPane.showMessageDialog(null, e.getMessage(), "An error Occured", JOptionPane.INFORMATION_MESSAGE);
-					}
-				} else
-					JOptionPane.showMessageDialog(null, "This button is not used", "An error Occured", JOptionPane.INFORMATION_MESSAGE);
-			} else
-				launchOrCreate(button);
+			launchOrCreate(button);
+		}
+	}
+
+	@Override
+	public void onButtonRightClick(EasyButton button) {
+		if (maxButton >= button.getId()) {
+			if (button.getPath() != null)
+				deleteOrEditButton(button);
+			else
+				JOptionPane.showMessageDialog(null, "This button is not used", "An error Occured", JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
+
+	private void deleteOrEditButton(EasyButton button) {
+		Object[] options = { "Delete", "Edit"};
+		int selection = JOptionPane.showOptionDialog(null, "The type of your button?", "Please select", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+		switch(selection) {
+			case 1:
+				EasyFrame.getInstance().setPanel(new ButtonSetPanel(button));
+				break;
+			case 0:
+				try {
+					VSD.getInstance().configManager.deleteButtonInformations(button.getId());
+					button.setText("button" + button.getId());
+					button.SetPath(null);
+					JOptionPane.showMessageDialog(null, "Your button is now fresh", "Buttons info deleted", JOptionPane.INFORMATION_MESSAGE);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				break;
 		}
 	}
 

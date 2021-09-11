@@ -95,6 +95,9 @@ public class EasyPanel extends JPanel{
 	public void onButtonClick(EasyButton button) {
 		
 	}
+	public void onButtonRightClick(EasyButton button) {
+
+	}
 	
 	public void onButtonClick(BasicButton button) {
 		
