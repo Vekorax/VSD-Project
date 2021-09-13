@@ -1,15 +1,13 @@
 package qc.veko.easyswing.guihelper.engine;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JComponent;
 
 import qc.veko.easyswing.engine.EasyPanel;
+import qc.veko.easyswing.guihelper.EasyRectangle;
 import qc.veko.easyswing.utils.Utils;
 
 @SuppressWarnings("serial")
@@ -33,6 +31,8 @@ public class BasicButton extends JComponent implements MouseListener{
 	private Image normalImage;
 
 	private ButtonType buttonType;
+
+	private EasyRectangle rect;
 	
 	
     public BasicButton(EasyPanel panel, int minX, int minY, int maxX, int maxY, String name, int id) {
@@ -73,6 +73,9 @@ public class BasicButton extends JComponent implements MouseListener{
 			default:
 		}
 		Utils.drawCenteredString(g, text, this.getBounds(), this.getFont());
+		while(hover) {
+
+		}
     }
 	
 	public int getId() {
@@ -116,14 +119,14 @@ public class BasicButton extends JComponent implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		hover = true;
-		
+		rect = new EasyRectangle(panel, e.getX(), e.getY(), 100, 100,Color.darkGray).setTitleRectangle("TEST", Color.orange).setText("Ceci est un très long test juste pour vérifier").setFontSize(15F);
 		repaint();
 		
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
 		hover = false;
-		
+		rect.remove();
 		repaint();
 		
 	}

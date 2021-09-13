@@ -60,7 +60,7 @@ public class BasicPanel extends EasyPanel {
 				yCounter++;
 			}
 		}
-		//deleteButton = new EasyButton(this, VSDUtils.BUTTONS_SEPARATION, 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Delete info", maxButton + 1, null).setColored(deleteButtonsColors(deleteInformations), deleteButtonsColors(deleteInformations)).addButton();
+		new EasyButton(this, VSDUtils.BUTTONS_SEPARATION, 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Options", maxButton + 1, null).setColored(Color.DARK_GRAY, Color.GRAY).addButton();
 		new EasyButton(this, xOfButton(1), 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Show KeyBind", maxButton + 2, null).setFontSize(15F).setColored(deleteButtonsColors(showKeybind), deleteButtonsColors(showKeybind)).addButton();
 	}
 
@@ -95,6 +95,10 @@ public class BasicPanel extends EasyPanel {
 				});
 				button.setColored(deleteButtonsColors(showKeybind), deleteButtonsColors(showKeybind));
 				break;
+			case "Options":
+				EasyFrame.getInstance().setPanel(new OptionPanel());
+				break;
+
 			}
 		} else {
 			launchOrCreate(button);

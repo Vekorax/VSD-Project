@@ -25,6 +25,7 @@ public class EasyRectangle extends JComponent{
 	private boolean isTitle = false;
 	private String titleText;
 	private String[] text;
+	private EasyPanel panel;
 	
 	public static Font font = new Font("Arial", Font.PLAIN, 10);
 	
@@ -35,9 +36,15 @@ public class EasyRectangle extends JComponent{
 		this.width = width;
 		this.height = height;
 		this.background = background;
+		this.panel = panel;
 		panel.add(this);
 	}
-	
+
+	public EasyRectangle remove() {
+		panel.remove(this);
+		return this;
+	}
+
 	public EasyRectangle setTitleRectangle(String text, Color title) {
 		isTitle = true;
 		titleText = text;

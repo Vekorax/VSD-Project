@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class ButtonSetPanel extends EasyPanel {
 
@@ -85,7 +86,12 @@ public class ButtonSetPanel extends EasyPanel {
         button.setText(text);
         this.button.setText(text);
         try {
-            VSD.getInstance().configManager.createButtonInformation(text, null, null, this.button.getId());
+            if (VSD.getInstance().configManager.buttonInformations.containsKey(this.button.getId())) {
+                Map<String, String> m = VSD.getInstance().configManager.buttonInformations.get(this.button.getId());
+                m.remove("Name");
+                m.put("Name", text);
+            } else
+                VSD.getInstance().configManager.createButtonInformation(text, null, null, this.button.getId());
         } catch (IOException e) {
             e.printStackTrace();
         }
