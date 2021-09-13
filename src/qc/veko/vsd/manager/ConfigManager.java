@@ -6,16 +6,19 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 import qc.veko.easyswing.utils.Utils;
 
 public class ConfigManager {
-	
-	private final String DATA_FOLDER = System.getenv("APPDATA") + "\\" + "VSD";
-	private final String CONFIG_FILE_PATH = DATA_FOLDER + "\\config.yml";
-	private final String BUTTONS_FILE_PATH = DATA_FOLDER + "\\buttons";
+
+	private final String OS = (System.getProperty("os.name")).toUpperCase();
+	private String dataFolder = getOsDataFolder();
+	private final String CONFIG_FILE_PATH = dataFolder + "config.yml";
+	private final String BUTTONS_FILE_PATH = dataFolder + "/buttons//";
 	private final String DEFAULT_WALLPAPER = "/qc/veko/vsd/background.png";
 	private final int DEFAULT_NUMBER_BUTTONS = 9;
 
@@ -24,9 +27,19 @@ public class ConfigManager {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Map<String, String> configInformations = new HashMap();
 
+	private String getOsDataFolder() {
+		String dataFolder;
+		if (OS.contains("WIN")) {
+			dataFolder = System.getenv("APPDATA") + "\\" + "VSD" + "//";
+		}
+		else {
+			dataFolder = System.getProperty("user.home") + "/VSD//";
+		}
+		return dataFolder;
+	}
+
 	public void loadConfig() throws Exception {
-		
-		File mainDirectory = new File(DATA_FOLDER);
+		File mainDirectory = new File(dataFolder);
 		File buttonsDirectory = new File(BUTTONS_FILE_PATH);
 		if(mainDirectory.exists()) {
 			File[] directoryListing = buttonsDirectory.listFiles();
@@ -40,6 +53,7 @@ public class ConfigManager {
 			readConfigFile();
 		} else {
 			mainDirectory.mkdir();
+			mainDirectory.setWritable(true);
 			buttonsDirectory.mkdir();
 			createConfigFile();
 		}
@@ -48,7 +62,12 @@ public class ConfigManager {
 	
 	//Reading the .yml file for a button
 	private void readButtonInformation(int fileNumber) throws IOException {
-		BufferedReader file = new BufferedReader(new FileReader(new File(BUTTONS_FILE_PATH + "\\button" + fileNumber + ".yml")));
+		BufferedReader file = null;
+		if (OS.equals("WIN")) {
+			file = new BufferedReader(new FileReader(new File(BUTTONS_FILE_PATH + "\\button" + fileNumber + ".yml")));
+		} else {
+			file = new BufferedReader(new FileReader(new File(BUTTONS_FILE_PATH + "button" + fileNumber + ".yml")));
+		}
     	String name = file.readLine().replace("Name : ", "").trim();
     	String path = file.readLine().replace("Path : ", "").trim();
     	String type = file.readLine().replace("Type : ", "").trim();
@@ -75,7 +94,12 @@ public class ConfigManager {
 	
 	//create a .yml file for a button
 	public void createButtonInformation(String name, String path, String type, int id) throws IOException {
-		File buttonFile = new File(BUTTONS_FILE_PATH + "\\button" + id + ".yml");
+		File buttonFile = null;
+		if (OS.equals("WIN"))
+			buttonFile = new File(BUTTONS_FILE_PATH + "\\button" + id + ".yml");
+		else
+			buttonFile = new File(BUTTONS_FILE_PATH + "button" + id + ".yml");
+		buttonFile.getParentFile().mkdir();
 		buttonFile.createNewFile();
 		FileWriter file = new FileWriter(buttonFile);
 		file.write("Name : " + name);
@@ -93,13 +117,19 @@ public class ConfigManager {
 	}
 	
 	public void deleteButtonInformations(int id) throws FileNotFoundException {
-		File file = new File(BUTTONS_FILE_PATH + "\\button" + id + ".yml");
+		File file = null;
+		if (OS.equals("WIN"))
+			file = new File(BUTTONS_FILE_PATH + "\\button" + id + ".yml");
+		else
+			file = new File(BUTTONS_FILE_PATH + "button" + id + ".yml");
 		file.delete();
 		buttonInformations.remove(id);
 	}
 	
 	private void createConfigFile() throws IOException {
 		File buttonFile = new File(CONFIG_FILE_PATH);
+		System.out.println(CONFIG_FILE_PATH);
+
 		buttonFile.createNewFile();
 		FileWriter file = new FileWriter(buttonFile);
 		file.write("Background : " + DEFAULT_WALLPAPER);

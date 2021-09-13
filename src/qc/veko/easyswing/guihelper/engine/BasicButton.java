@@ -73,9 +73,6 @@ public class BasicButton extends JComponent implements MouseListener{
 			default:
 		}
 		Utils.drawCenteredString(g, text, this.getBounds(), this.getFont());
-		while(hover) {
-
-		}
     }
 	
 	public int getId() {
@@ -90,6 +87,11 @@ public class BasicButton extends JComponent implements MouseListener{
 		normalColor = normal;
 		hoverColor = hover;
 		setButtonType(ButtonType.COLORED);
+		return this;
+	}
+
+	public BasicButton setCommentary(EasyRectangle rect) {
+		this.rect = rect;
 		return this;
 	}
 	
@@ -119,14 +121,20 @@ public class BasicButton extends JComponent implements MouseListener{
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		hover = true;
-		rect = new EasyRectangle(panel, e.getX(), e.getY(), 100, 100,Color.darkGray).setTitleRectangle("TEST", Color.orange).setText("Ceci est un très long test juste pour vérifier").setFontSize(15F);
+		if(rect != null) {
+			rect.setPosition(x, y-50);
+			rect.add();
+			panel.repaint();
+		}
 		repaint();
-		
 	}
 	@Override
 	public void mouseExited(MouseEvent e) {
 		hover = false;
-		rect.remove();
+		if(rect != null) {
+			rect.remove();
+			panel.repaint();
+		}
 		repaint();
 		
 	}

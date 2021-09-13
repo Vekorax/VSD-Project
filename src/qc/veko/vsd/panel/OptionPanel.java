@@ -13,7 +13,8 @@ public class OptionPanel extends EasyPanel {
         setBackGroundImage(VSD.getInstance().configManager.configInformations.get("Background")).setBackGroundScale(600, 600);
 
         BasicButton test = new BasicButton(this,100,100,100,100, "name", 1).setColored(Color.white, Color.GRAY);
-        new EasyRectangle(this, 10, 200, 100, 100,Color.darkGray).setTitleRectangle("TEST", Color.orange).setText("Ceci est un très long test juste pour vérifier").setFontSize(15F);
+        EasyRectangle rect = new EasyRectangle(this, "comment ça va blg",Color.darkGray).setTitleRectangle("TEST", Color.orange).setFontSize(15F);
+        test.setCommentary(rect);
     }
 
     @Override

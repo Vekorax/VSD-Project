@@ -37,11 +37,40 @@ public class EasyRectangle extends JComponent{
 		this.height = height;
 		this.background = background;
 		this.panel = panel;
-		panel.add(this);
+		setBounds(x,y,width,height);
 	}
+	public EasyRectangle (EasyPanel panel, String text, Color background) {
+		this.background = background;
+		this.panel = panel;
+		this.x = 0;
+		this.y = 0;
+		this.width = 1;
+		this.height = 1;
+		setBounds(x,y,width,height);
+		setText(text);
+	}
+
 
 	public EasyRectangle remove() {
 		panel.remove(this);
+		repaint();
+		return this;
+	}
+
+	public EasyRectangle add(EasyPanel panel){
+		panel.add(this);
+		return this;
+	}
+
+	public EasyRectangle add() {
+		panel.add(this);
+		return this;
+	}
+
+	public EasyRectangle setPosition(int x, int y) {
+		this.x = x;
+		this.y = y;
+		repaint();
 		return this;
 	}
 
