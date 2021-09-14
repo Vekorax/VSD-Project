@@ -98,7 +98,6 @@ public class EasyRectangle extends JComponent{
 		g.setColor(background);
 		g.fillRect(0,0,this.getWidth(), this.getHeight());
 		Rectangle rect = new Rectangle(0,0,this.getWidth(), 30);
-		System.out.println( this.getHeight());
 		if (text != null)
 			drawText(g, text, this.getBounds());
 		if (isTitle) {

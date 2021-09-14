@@ -139,6 +139,11 @@ public class BasicButton extends JComponent implements MouseListener{
 		
 	}
 
+	public BasicButton setFontSize(float size) {
+		this.setFont(this.getFont().deriveFont(size));
+		return this;
+	}
+
 	private void setButtonType(ButtonType buttonType) {
 		this.buttonType = buttonType;
 	}
