@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jnativehook.keyboard.NativeKeyEvent;
 import qc.veko.easyswing.utils.Utils;
 
 public class ConfigManager {
@@ -149,7 +150,11 @@ public class ConfigManager {
 	}
 	
 	public void addKeybindToButtonsFile(int id, int keybind, String string) throws IOException {
-		File buttonFile = new File(BUTTONS_FILE_PATH + "\\button" + id + ".yml");
+		File buttonFile = null;
+		if (OS.equals("WIN"))
+			buttonFile = new File(BUTTONS_FILE_PATH + "\\button" + id + ".yml");
+		else
+			buttonFile = new File(BUTTONS_FILE_PATH + "button" + id + ".yml");
 		buttonFile.createNewFile();
 		FileWriter file = new FileWriter(buttonFile);
 		String name = buttonInformations.get(id).get("Name");
@@ -161,7 +166,9 @@ public class ConfigManager {
 		file.write("\nKeyBind : " + keybind);
 		file.write("\nKeyBindText : " + string);
 		file.close();
-		
+
+		buttonInformations.get(id).put("KeyBind", String.valueOf(keybind));
+		buttonInformations.get(id).put("KeyBindText", string);
 		
 	}
 	

@@ -13,7 +13,6 @@ import javax.swing.JComponent;
 
 import qc.veko.easyswing.engine.EasyPanel;
 
-@SuppressWarnings("serial")
 public class EasyRectangle extends JComponent{
 	private int x;
 	private int y;

@@ -9,7 +9,6 @@ import qc.veko.easyswing.guihelper.EasyButton;
 import qc.veko.easyswing.guihelper.engine.BasicButton;
 import qc.veko.easyswing.utils.Utils;
 
-@SuppressWarnings("serial")
 public class EasyPanel extends JPanel{
 
 	private String backgroundPath = "https://www.litmus.com/wp-content/uploads/2020/04/ultimate-guide-to-background-images-in-email.png";

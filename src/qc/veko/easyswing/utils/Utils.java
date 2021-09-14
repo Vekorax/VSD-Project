@@ -90,7 +90,7 @@ public class Utils {
         // Drawing the text, centered
         g.setColor(Color.BLACK);
         g.setFont(font);
-        g.drawString(str, (int) ((int) centerPos.getX()), (int) centerPos.getY());
+        g.drawString(str, (int) ((int) centerPos.getX() - 20f), (int) centerPos.getY());
     }
     public static Point getStringCenterPos(Rectangle parent, String str, FontMetrics fontMetrics, Graphics g)
     {
@@ -98,7 +98,7 @@ public class Utils {
         Rectangle2D stringBounds = fontMetrics.getStringBounds(str, g);
 
         // Getting the center pos for this rectangle
-        double x = ((parent.getWidth() - stringBounds.getWidth()) / 2);
+        double x = ((parent.getWidth() - stringBounds.getWidth()) / 2 - fontMetrics.getFont().getSize());
         double y = ((parent.getHeight() - stringBounds.getHeight()) / 2 + fontMetrics.getAscent());
         return new Point((int) x, (int) y);
     }
@@ -115,7 +115,7 @@ public class Utils {
         // Drawing the text, centered
         g.setColor(Color.BLACK);
         g.setFont(g.getFont().deriveFont(20F));
-        g.drawString(str, (int) ((int) centerPos.getX()), (int) centerPos.getY());
+        g.drawString(str, (int) ((int) centerPos.getX() - 20f), (int) centerPos.getY());
     }
     
     public static void drawFullsizedImage(Graphics g, JComponent component, Image image)

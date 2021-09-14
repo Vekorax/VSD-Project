@@ -17,7 +17,7 @@ public class OptionPanel extends EasyPanel {
                 .setTitleRectangle("Go Back", Color.orange)
                 .setFontSize(15F);
 
-        new BasicButton(this,30,500 ,VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON,"Back", 0)
+        new BasicButton(this,30,500 , VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON,"Back", 0)
                 .setColored(Color.DARK_GRAY, Color.GRAY)
                 .setFontSize(15F)
                 .setCommentary(rect);

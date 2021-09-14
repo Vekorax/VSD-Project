@@ -4,6 +4,7 @@ import qc.veko.easyswing.engine.EasyFrame;
 import qc.veko.easyswing.engine.EasyPanel;
 import qc.veko.easyswing.guihelper.EasyButton;
 import qc.veko.easyswing.utils.EasyColor;
+import qc.veko.easyswing.utils.Utils;
 import qc.veko.vsd.VSD;
 import qc.veko.vsd.utils.VSDUtils;
 
@@ -20,6 +21,9 @@ public class ButtonSetPanel extends EasyPanel {
     public EasyButton button;
     public EasyButton keybindButton;
     public EasyButton pathButton;
+    private String type;
+    public int keybind;
+    public String keybindText;
     public boolean isKeyBindingMode = false;
 
     public ButtonSetPanel(EasyButton button){
@@ -29,6 +33,14 @@ public class ButtonSetPanel extends EasyPanel {
         setLayout(null);
         this.button = button;
         loadButton();
+        if (VSD.getInstance().configManager.buttonInformations.containsKey(button.getId())) {
+            type = VSD.getInstance().configManager.buttonInformations.get(button.getId()).get("Type");
+            if (VSD.getInstance().configManager.buttonInformations.get(button.getId()).containsKey("KeyBind")) {
+                Map<String, String> m = VSD.getInstance().configManager.buttonInformations.get(button.getId());
+                keybind = Utils.convertStringToInteger(m.get("KeyBind"));
+                keybindText = m.get("KeyBindText");
+            }
+        }
     }
 
     private void loadButton() {
@@ -48,17 +60,23 @@ public class ButtonSetPanel extends EasyPanel {
                 chooseName(button);
                 break;
             case 2:
-                chooseData(this.button.getText());
+                chooseData();
                 break;
             case 3:
                 isKeyBindingMode = !isKeyBindingMode;
                 button.setColored(deleteButtonsColors(isKeyBindingMode), deleteButtonsColors(isKeyBindingMode));
                 break;
             case 4:
-                if (this.button.getText() != null && this.button.getPath() != null)
-                    EasyFrame.getInstance().setPanel(new BasicPanel());
-                else
-                    JOptionPane.showMessageDialog(null, "The name and the path must be set before finishing", "Empty informations", JOptionPane.INFORMATION_MESSAGE);
+                if (this.button.getText() != null && this.button.getPath() != null) {
+                    try {
+                        VSD.getInstance().configManager.createButtonInformation(this.button.getText(), this.button.getPath(), type, this.button.getId());
+                        if (keybindText != null) {
+                            VSD.getInstance().configManager.addKeybindToButtonsFile(this.button.getId(), keybind, keybindText);
+                        }
+                        EasyFrame.getInstance().setPanel(new BasicPanel());
+                    } catch (IOException e) {e.printStackTrace();}
+                    } else
+                        JOptionPane.showMessageDialog(null, "The name and the path must be set before finishing", "Empty informations", JOptionPane.INFORMATION_MESSAGE);
                 break;
             default:
                 EasyFrame.getInstance().setPanel(new BasicPanel());
@@ -85,31 +103,21 @@ public class ButtonSetPanel extends EasyPanel {
             return;
         button.setText(text);
         this.button.setText(text);
-        try {
-            if (VSD.getInstance().configManager.buttonInformations.containsKey(this.button.getId())) {
-                Map<String, String> m = VSD.getInstance().configManager.buttonInformations.get(this.button.getId());
-                m.remove("Name");
-                m.put("Name", text);
-            } else
-                VSD.getInstance().configManager.createButtonInformation(text, null, null, this.button.getId());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
-    private void chooseData(String name) {
+    private void chooseData() {
         Object[] options = { "Internet", "File"};
         int selection = JOptionPane.showOptionDialog(null, "The type of your button?", "Please select", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
         switch(selection) {
             case 1:
-                openFileSelector(name);
+                openFileSelector();
                 break;
             case 0:
-                openLinkSelector(name);
+                openLinkSelector();
                 break;
         }
     }
-    private void openFileSelector(String text) {
+    private void openFileSelector() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Choose a file to open");
         int returnValue = fileChooser.showOpenDialog(null);
@@ -119,25 +127,16 @@ public class ButtonSetPanel extends EasyPanel {
 
             keep = selectedFile.getAbsolutePath();
             button.SetPath(keep);
-            try {
-                VSD.getInstance().configManager.createButtonInformation(text, keep, "file", button.getId());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            type = "file";
         }
     }
 
-    private void openLinkSelector(String text) {
+    private void openLinkSelector() {
         String link = JOptionPane.showInputDialog(null, "Enter Name of Button", "Name of Button", JOptionPane.INFORMATION_MESSAGE);
         if (link == null)
             return;
         button.SetPath(link);
-        try {
-            VSD.getInstance().configManager.createButtonInformation(text, link, "internet", button.getId());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        button.setText(text);
+        type = "internet";
     }
 
     public static ButtonSetPanel getInstance(){

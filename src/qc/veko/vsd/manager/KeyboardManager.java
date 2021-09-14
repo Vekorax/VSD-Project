@@ -35,23 +35,16 @@ public class KeyboardManager implements NativeKeyListener {
     @Override
     public void nativeKeyReleased(NativeKeyEvent arg0) {
         if (ButtonSetPanel.getInstance().isKeyBindingMode) {
-            Map<String, String> m = new HashMap<>();
-            if (VSD.getInstance().configManager.buttonInformations.containsKey(ButtonSetPanel.getInstance().button.getId()))
-                m = VSD.getInstance().configManager.buttonInformations.get(ButtonSetPanel.getInstance().button.getId());
-            m.put("KeyBind", String.valueOf(arg0.getKeyCode()));
-            m.put("KeyBindText", NativeKeyEvent.getKeyText(arg0.getKeyCode()));
-            VSD.getInstance().configManager.buttonInformations.put(ButtonSetPanel.getInstance().button.getId(), m);
-
-            try {
-                VSD.getInstance().configManager.addKeybindToButtonsFile(ButtonSetPanel.getInstance().button.getId(), arg0.getKeyCode(), NativeKeyEvent.getKeyText(arg0.getKeyCode()));
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            ButtonSetPanel.getInstance().keybind = arg0.getKeyCode();
+            ButtonSetPanel.getInstance().keybindText = NativeKeyEvent.getKeyText(arg0.getKeyCode());
 
             if (BasicPanel.getInstance().showKeybind)
                 BasicPanel.getInstance().getButtonFromId(ButtonSetPanel.getInstance().button.getId()).setText("(" + NativeKeyEvent.getKeyText(arg0.getKeyCode()) + ")");
 
             ButtonSetPanel.getInstance().isKeyBindingMode = false;
+            ButtonSetPanel.getInstance().keybindButton
+                    .setColored(ButtonSetPanel.getInstance().deleteButtonsColors(false),
+                            ButtonSetPanel.getInstance().deleteButtonsColors(ButtonSetPanel.getInstance().isKeyBindingMode));
         } else {
             VSD.getInstance().configManager.buttonInformations.forEach((id, map) -> {
                 if (map.containsKey("KeyBind")) {

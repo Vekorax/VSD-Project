@@ -2,7 +2,6 @@ package qc.veko.easyswing.engine;
 
 import javax.swing.JFrame;
 
-@SuppressWarnings("serial")
 public class EasyFrame extends JFrame{
 
 	

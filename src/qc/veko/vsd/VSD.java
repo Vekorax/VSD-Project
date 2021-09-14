@@ -32,7 +32,7 @@ public class VSD extends EasySwing {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		//new KeyboardManager();
+		new KeyboardManager();
 	}
 	
 	public static VSD getInstance() {
