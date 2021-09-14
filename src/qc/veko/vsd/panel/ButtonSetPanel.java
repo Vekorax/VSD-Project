@@ -45,7 +45,7 @@ public class ButtonSetPanel extends EasyPanel {
 
     private void loadButton() {
         String buttonName = (button.getPath() != null) ? button.getText() : "Edit Name";
-        new EasyButton(this,  xOfButton(1), 140, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, buttonName, 1, null).setColored(Color.darkGray, Color.gray).setTextColor(Color.white).addButton();;
+        new EasyButton(this,  xOfButton(1), 140, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, buttonName, 1, null).setColored(Color.darkGray, Color.gray).setTextColor(Color.white).addButton();
 
         pathButton = new EasyButton(this, VSDUtils.BUTTONS_SEPARATION, 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "Set Path", 2, null).setTextColor(Color.white).setColored(Color.darkGray, Color.gray).addButton();
         keybindButton = new EasyButton(this, xOfButton(1), 500, VSDUtils.WIDTH_OF_BUTTON, VSDUtils.HEIGHT_OF_BUTTON, "KeyBind", 3, null).setColored(deleteButtonsColors(isKeyBindingMode), deleteButtonsColors(isKeyBindingMode)).addButton();
@@ -106,14 +106,22 @@ public class ButtonSetPanel extends EasyPanel {
     }
 
     private void chooseData() {
-        Object[] options = { "Internet", "File"};
-        int selection = JOptionPane.showOptionDialog(null, "The type of your button?", "Please select", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
-        switch(selection) {
+        Object[] options = { "Internet", "File", "Mute Microphone", "Cut Camera", "Switch Scene", "Start / Stop streaming", "Start / Stop Recording", "Open Chat"};
+
+        JComboBox optionList = new JComboBox(options);
+        optionList.setSelectedIndex(0);
+        JOptionPane.showMessageDialog(null, optionList, "Title",
+                JOptionPane.QUESTION_MESSAGE);
+
+        //int selection = JOptionPane.showOptionDialog(null, "The type of your button?", "Please select", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+        switch(optionList.getSelectedIndex()) {
+            case 0:
+                openLinkSelector();
+                break;
             case 1:
                 openFileSelector();
                 break;
-            case 0:
-                openLinkSelector();
+            case 2:
                 break;
         }
     }
