@@ -9,10 +9,10 @@ import qc.veko.vsd.VSD;
 import qc.veko.vsd.utils.VSDUtils;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
+import java.util.*;
 
 public class ButtonSetPanel extends EasyPanel {
 
@@ -106,7 +106,7 @@ public class ButtonSetPanel extends EasyPanel {
     }
 
     private void chooseData() {
-        Object[] options = { "Internet", "File", "Mute Microphone", "Cut Camera", "Switch Scene", "Start / Stop streaming", "Start / Stop Recording", "Open Chat"};
+        Object[] options = { "Internet", "File", "Sound / Music", "Twitch Chat (Chatty)", };
 
         JComboBox optionList = new JComboBox(options);
         optionList.setSelectedIndex(0);
@@ -138,6 +138,44 @@ public class ButtonSetPanel extends EasyPanel {
             type = "file";
         }
     }
+
+   /* private void selectMicrophone() {
+        Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
+        Mixer myMixer;
+
+        Map<Integer, Integer> m = new HashMap();
+        List <String> options = new ArrayList<>();
+        for(int i = 0; i < mixerInfo.length; i++) {
+            myMixer = AudioSystem.getMixer(mixerInfo[i]);
+            if (myMixer.isLineSupported(Port.Info.MICROPHONE)) {
+                m.put(options.size(), i);
+                options.add(myMixer.getMixerInfo().getName());
+            }
+        }
+        JComboBox optionList = new JComboBox(options.toArray());
+        JOptionPane.showMessageDialog(null, optionList, "Title",
+                JOptionPane.QUESTION_MESSAGE);
+        myMixer = AudioSystem.getMixer(mixerInfo[m.get(optionList.getSelectedIndex())]);
+
+        System.out.println(myMixer.getMixerInfo().getName());
+        mute(myMixer.getSourceLines());
+
+    }
+
+    private void mute (Line[] lines) {
+        for (Line line : lines) {
+            System.out.println("test");
+            try {
+                line.open();
+            } catch (LineUnavailableException e) {
+                e.printStackTrace();
+            }
+            BooleanControl bc = (BooleanControl) line.getControl(BooleanControl.Type.MUTE);
+            bc.setValue(true);
+            System.out.println(bc.getValue());
+            line.close();
+        }
+    }*/
 
     private void openLinkSelector() {
         String link = JOptionPane.showInputDialog(null, "Enter Name of Button", "Name of Button", JOptionPane.INFORMATION_MESSAGE);

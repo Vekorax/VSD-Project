@@ -5,10 +5,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 
 import javax.swing.JButton;
@@ -22,6 +19,9 @@ public class EasyButton {
 	
 	private EasyPanel panel;
 	public static Font font = new Font("Arial", Font.PLAIN, 10);
+	private EasyRectangle rect;
+	private int x;
+	private int y;
 	
 	public EasyButton (EasyPanel panel, int minX, int minY, int maxX, int maxY, String name, int id, String path) {
 		this.panel = panel;
@@ -32,8 +32,47 @@ public class EasyButton {
 		button.setBorderPainted(false);
 		button.setFont(font);
 		button.setFocusPainted(false);
+		x = minX;
+		y = minY;
 		this.id = id;
 		this.path = path;
+	}
+
+	public EasyButton addCommentary(EasyRectangle rect) {
+		this.rect = rect;
+		button.addMouseListener(addCommentary());
+		return this;
+	}
+
+	private MouseListener addCommentary() {
+		MouseListener mouseListener = new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+
+			@Override
+			public void mousePressed(MouseEvent e) {}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				if(rect != null) {
+					rect.setPosition(x, y-50);
+					rect.add();
+					panel.repaint();
+				}
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				if(rect != null) {
+					rect.remove();
+					panel.repaint();
+				}
+			}
+		};
+		return mouseListener;
 	}
 
 	private MouseAdapter onRightClick(EasyButton button) {

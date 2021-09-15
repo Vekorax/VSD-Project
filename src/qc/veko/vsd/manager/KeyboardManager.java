@@ -11,10 +11,6 @@ import qc.veko.vsd.panel.BasicPanel;
 import qc.veko.vsd.panel.ButtonSetPanel;
 import qc.veko.vsd.utils.VSDUtils;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 public class KeyboardManager implements NativeKeyListener {
 
     public KeyboardManager(){

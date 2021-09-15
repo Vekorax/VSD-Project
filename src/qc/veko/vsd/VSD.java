@@ -11,7 +11,6 @@ package qc.veko.vsd;
 import qc.veko.easyswing.EasySwing;
 import qc.veko.vsd.manager.ConfigManager;
 import qc.veko.vsd.manager.KeyboardManager;
-import qc.veko.vsd.manager.OBSManager;
 import qc.veko.vsd.panel.BasicPanel;
 
 public class VSD extends EasySwing {
@@ -23,7 +22,6 @@ public class VSD extends EasySwing {
 		new VSD();
 		getFrame().setDefaultPanel(new BasicPanel()).setFrameResolution(600, 600).setFrameTitle("VSD Project V0.0.1");
 		launch();
-		
 	}
 	
 	public VSD() {
@@ -34,7 +32,6 @@ public class VSD extends EasySwing {
 			e.printStackTrace();
 		}
 		new KeyboardManager();
-		new OBSManager();
 	}
 	
 	public static VSD getInstance() {
